@@ -47,7 +47,7 @@ import {test, expect} from '@playwright/test'
                             checkin: '2026-09-01',
                             checkout: '2026-09-10',
                         },
-                        additionalneeds: 'Breakfast and lunch',
+                        additionalneeds: 'Breakfast and Lunch',
                     },
                 });
 
@@ -68,6 +68,37 @@ import {test, expect} from '@playwright/test'
                 expect(body.firstname).toBe('John');
                 expect(body.lastname).toBe('Doe');
                 console.log(body);
+            });
+
+            await test.step('Update Booking Details', async () =>{
+
+                const updateResponse = await request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept':'application/json',
+                        //Pass the Auth Token inside the Cookie header
+                        'Cookie': `token=${token}`,
+                    },
+
+                    data: {
+                        firstname: 'Jane', //changing name to Jane
+                        lastname: 'Doe',
+                        totalprice: 150, //changing price to 150
+                        depositpaid: true,
+                        bookingdates: {
+                            checkin: '2026-09-01',
+                            checkout: '2026-09-10',
+                        },
+                        additionalneeds: 'Breakfast and Lunch',
+                    },
+                });
+
+                expect(updateResponse.status()).toBe(200);
+                const body = await updateResponse.json();
+                expect(body.firstname).toBe('Jane');
+                expect(body.totalprice).toBe(150);
+
+
             });
             
 
