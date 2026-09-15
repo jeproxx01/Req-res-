@@ -7,10 +7,10 @@ import {test, expect} from '@playwright/test'
         let token: string;
         let bookingId: number;
 
-
+        
         test.beforeAll(async ({request}) =>{
 
-            const response = await request.post('https://restful-booker.herokuapp.com/auth', {
+            const response = await request.post('/auth', {
 
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ import {test, expect} from '@playwright/test'
         test('should perform CRUD Workflow', async ({request}) => {
 
             await test.step('Create a new Booking',async({}) => {
-                const createResponse = await request.post('https://restful-booker.herokuapp.com/booking', {
+                const createResponse = await request.post('/booking', {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -61,7 +61,7 @@ import {test, expect} from '@playwright/test'
             });
 
             await test.step('Retrived the created booking', async () => {
-                const getResponse = await request.get(`https://restful-booker.herokuapp.com/booking/${bookingId}`);
+                const getResponse = await request.get(`/booking/${bookingId}`);
 
                 expect(getResponse.status()).toBe(200);
                 const body = await getResponse.json();
@@ -72,7 +72,7 @@ import {test, expect} from '@playwright/test'
 
             await test.step('Update Booking Details', async () =>{
 
-                const updateResponse = await request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
+                const updateResponse = await request.put(`/booking/${bookingId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept':'application/json',
